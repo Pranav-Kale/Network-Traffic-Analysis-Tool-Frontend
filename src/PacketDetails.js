@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 
 function PacketDetails() {
   const { id } = useParams();
-  console.log("id : ",id)
   const [packet, setPacket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,14 +12,12 @@ function PacketDetails() {
     fetchPacketDetails();
   }, [id]);
 
-
   const fetchPacketDetails = async () => {
     setLoading(true);
     setError(null);
     try {
-        const response = await axios.get('http://localhost:5000/get-live-packets');
-        setPacket(response.data.packets[id]);
-        console.log("Packets:", response?.data?.packets);
+      const response = await axios.get('http://localhost:5000/get-live-packets');
+      setPacket(response.data.packets[id]);
     } catch (error) {
       console.error("Error fetching packet details:", error);
       setError("Error fetching packet details. Please try again later.");
@@ -30,23 +27,19 @@ function PacketDetails() {
   };
 
   return (
-    <div>
-      <h1>Packet Details</h1>
+    <div className="max-w-4xl mx-auto p-4 sm:p-8 bg-white shadow-md rounded-lg">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Packet Details</h1>
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-gray-500">Loading...</p>
       ) : error ? (
-        <p style={{ color: 'red' }}>{error}</p>
+        <p className="text-red-500">{error}</p>
       ) : (
-        <pre>{JSON.stringify(packet, null, 2)}</pre>
+        <pre className="bg-gray-100 p-4 rounded-lg border border-gray-200 text-gray-700 overflow-x-auto">
+          {JSON.stringify(packet, null, 2)}
+        </pre>
       )}
     </div>
   );
 }
 
 export default PacketDetails;
-
-
-
-
-
-
